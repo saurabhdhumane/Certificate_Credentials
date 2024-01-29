@@ -1,0 +1,179 @@
+﻿@model List<Certificate_Credentials.Models.interns_tbl>
+
+
+<style>
+    .certificate-details {
+        max-width: 800px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .img-container {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .details-container {
+        flex: 2;
+    }
+
+    .certificate-table th {
+        text-align: right;
+        padding: 10px;
+    }
+
+    .certificate-table td {
+        padding: 10px;
+    }
+
+    .certificate-table a {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .no-results {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="details-container">
+    @using (Html.BeginForm("Index", "Verify", FormMethod.Get))
+    {
+        <table>
+            <tr>
+                <th>
+                    <label for="certificateNo">Certificate Number:</label>
+                </th>
+                <td>
+                    @Html.TextBox("certificateNo", ViewBag.CertificateNo as string, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align: center;color:red;font-weight:bolder">OR</th>
+            </tr>
+            <tr>
+                <th>
+                    <label for="registrationNo">Registration Number:</label>
+                </th>
+                <td>
+                    @Html.TextBox("registrationNo", ViewBag.RegistrationNo as string, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center">
+                    <button type="submit" class="btn btn-dark mt-2">Search</button>
+                </td>
+            </tr>
+        </table>
+        <br />
+        @ViewBag.ErrorMessage
+    }
+</div>
+<br />
+@*@if (!string.IsNullOrEmpty(ViewBag.CertificateNo) || !string.IsNullOrEmpty(ViewBag.RegistrationNo))
+    {*@
+<div>
+    <h3 style="text-align:center">MindScape Technologies <span style="color: #ff8c00">Intern</span> Certificate Details</h3>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                @if (Model.Count > 0 && Model[0].ImageData != null)
+                {
+                    <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model[0].ImageData))" alt="Certificate Image" class="img-fluid" />
+                }
+                else
+                {
+                    <span>No Image available</span>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <div class="jumbotron text-center">
+                    <h6 class="display-4" style="color: #ff8c00;">
+                        MindScapte Internship Certification
+                    </h6>
+                    <div class="lead">
+                        @if (Model.Count > 0)
+                        {
+                            <div class="table-responsive">
+                                <table>
+                                    <tr>
+                                        <th>Intern Name</th>
+                                        <td>@Model[0].internname</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Intern Email</th>
+                                        <td>@Model[0].internemail</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Intern Registration Number</th>
+                                        <td>@Model[0].internregistrationno</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Intern Certificate Number</th>
+                                        <td>@Model[0].Internshipcertificateno</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Intern Domain</th>
+                                        <td>@Model[0].Domain</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Intern Duration</th>
+                                        <td>@Model[0].Duration</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="2" style="text-align:center">
+                                            @if (Model[0].PdfData != null)
+                                            {
+                                                <a href="data:application/pdf;base64,@(Convert.ToBase64String(Model[0].PdfData))" class="btn btn-dark" download="Certificate.pdf">Download PDF</a>
+                                            }
+                                            else
+                                            {
+                                                <span>No PDF available</span>
+                                            }
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>No results found.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add this script to your HTML
+    document.addEventListener("DOMContentLoaded", function () {
+        // Wait for the DOM to be fully loaded
+        var resultDiv = document.getElementById("resultDiv");
+        var searchButton = document.getElementById("yourSearchButtonId"); // Replace with the actual ID of your search button
+
+        if (resultDiv && searchButton) {
+            // Hide the resultDiv initially
+            resultDiv.style.display = "none";
+
+            // Attach a click event listener to the search button
+            searchButton.addEventListener("click", function () {
+                // Toggle the visibility of the resultDiv
+                resultDiv.style.display = "block";
+            });
+        }
+    });
+</script>
